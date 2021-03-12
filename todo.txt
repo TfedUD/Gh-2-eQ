@@ -1,0 +1,4 @@
+Todo List:
+    [ ]   Create immutable classes for spaces
+    [ ]   Create immutable classes for floors
+    [ ]   Complete *.inp writer to use floor and space objects to write into *.inp
