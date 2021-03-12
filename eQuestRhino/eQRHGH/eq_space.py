@@ -1,4 +1,5 @@
 # Based on honeybee_energy properties, face.py face energy properties
+#Make a writer that uses space object to_inp() str
 
 
 import rhinoscriptsyntax as rs
@@ -42,11 +43,22 @@ class Eq_space(object):
 
 
 
-    def to_dict(self, abridges=False):
+    def to_dict(self, abridged=False):
         """ Return Space Properties as a dictionary.
+        This is where to add additional properties to each space object!
+        Unless there is exist better way. But for now this is it. 
         Args: 
             abidged false: Returns full dict, True: returns abridged version
         """
+        base= {'Space': {}}
+        base['Space']['type'] = 'Eq_space_properties' if not \
+            abridged else 'Eq_space_properties_abridged'
+        if self._space_name is not None:
+            base['Space']['spc_name'] = \
+                self._space_name.to_dict()
+        if self._spc_vrts is not None:
+            base['Space']['spc_vrts'] = self._spc_vrts.to_dict()
+        return base
 
 
 
