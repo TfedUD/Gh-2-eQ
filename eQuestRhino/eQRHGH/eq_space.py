@@ -19,7 +19,7 @@ class Eq_space(object):
     """
     __slots__ = ('_spc_srf', '_space_name', '_spc_vrts')
 
-    def __init__(self, spc_srf, space_name, spc_vrts):
+    def __init__(self, spc_srf, space_name, spc_vrts=None):
         self._spc_srf = spc_srf
         self._space_name = space_name
         self._spc_vrts = spc_vrts
@@ -33,11 +33,18 @@ class Eq_space(object):
     def spc_name(self):
         """Get the name of the space"""
         return self._space_name
-    
+# spaceverts not yet working    
     @property
     def spc_vrts(self):
         """Get the verts of the space"""
         return self._spc_vrts
+
+    @spc_vrts.setter
+    def spc_vrts(self, value):
+        value = []
+        b = rs.SurfacePoints(self.spc_srf)
+        value.append(b)
+        self._spc_vrts = value
 
 
 
@@ -80,5 +87,5 @@ class Eq_space(object):
             return self.__repr__()
 
     def __repr__(self):
-        return 'Space Properties: [Space: {}]'.format(self.spc_srf.display_name)
+        return 'Space Properties: [Space: {}]'.format(self.spc_srf.spc_name)
 

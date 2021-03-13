@@ -9,6 +9,11 @@ import Rhino
 from vectormath.euclid import Point3, Vector3, Vector2
 import rhinoscriptsyntax as rs
 from collections import namedtuple
+import eq_space
+from eq_space import Eq_space
+
+
+
 
 class Space:
     def __init__(self, _surfaces=[], _name=None):
@@ -37,4 +42,5 @@ class Space:
     @property
     def spcName(self):
         nm = self._nameS
+        return nm
         
