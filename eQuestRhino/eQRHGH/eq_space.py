@@ -4,7 +4,7 @@
 
 import rhinoscriptsyntax as rs
 
-class Eq_space(object):
+class Eq_space:
     """Space Properties for Eq_space.
     
     Args:
@@ -17,7 +17,7 @@ class Eq_space(object):
         * spc_name
         * spc_vrts
     """
-    __slots__ = ('_spc_srf', '_space_name', '_spc_vrts')
+    #__slots__ = ('_spc_srf', '_space_name', '_spc_vrts')
 
     def __init__(self, spc_srf, space_name):
         self._spc_srf = spc_srf
@@ -34,12 +34,14 @@ class Eq_space(object):
         """Get the name of the space"""
         return self._space_name
 
-# space verts not yet working    
+   
     @property
     def spc_vrts(self):
         """Return the verts of the space"""
-        self._spc_vrts.append(self._get_verts(self.spc_srf))
-        return self._spc_vrts
+        _spc_vrts = []
+        _spc_vrts.append(self._get_verts(self.spc_srf))
+        return _spc_vrts
+            
     
     @staticmethod
     def _get_verts(_srfc):
@@ -74,21 +76,21 @@ class Eq_space(object):
 
 
 
-    def duplicate(self, new_spc_srf=None):
+    #def duplicate(self, new_spc_srf=None):
         """Get a copy of this object.
         Args:
             new_spc_srf: A new space object to host these properties.
                 If None, the properties will *HOPEFULLY* be duplicated with the same host.
         """
-        _spc_srf = new_spc_srf or self._spc_srf
-        return Eq_space(_spc_srf, self._space_name, self._spc_vrts)
+       # _spc_srf = new_spc_srf or self._spc_srf
+      #  return Eq_space(_spc_srf, self._space_name, self._spc_vrts)
 
 
 
-
+"""
     def ToString(self):
             return self.__repr__()
 
     def __repr__(self):
         return 'Space Properties: [Space: {}]'.format(self.spc_srf.spc_name)
-
+"""
