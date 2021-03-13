@@ -39,21 +39,8 @@ class eQ_surface:
         if nm is None or nm == 'None':
             warning = "AAAHHHHH line 39"
             _ghenv.Component.AddRuntimeMessage(ghk.GH_RuntimeMessageLevel.Remark, warning)
-    """
-    def getSrfVrts(gm):
-        gm = gm
-        pntstr = []
-        pts = []
-        for g in gm:
-            pts = rs.SurfacePoints(g)
-            for pt in pts:
-                pntstr.append('( {}, {} )'.format(pt.X, pt.Y))
-            return pntstr
-    """    
+    
             
-
-
-
 
     @property
     def name(self):
