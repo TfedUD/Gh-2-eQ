@@ -1,5 +1,5 @@
 Todo List:
-    [ ]   Determin best location to assertain space verts
-    [ ]   Create immutable classes for spaces ::inWork
-    [ ]   Create immutable classes for floors
+
     [ ]   Complete *.inp writer to use floor and space objects to write into *.inp
+    [ ]   Complete dynamic interface to populate the space attrs toolbar with
+    
