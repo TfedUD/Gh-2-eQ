@@ -22,7 +22,7 @@ class Eq_space:
     def __init__(self, spc_srf, space_name):
         self._spc_srf = spc_srf
         self._space_name = space_name
-        self._spc_vrts = []
+        self._spc_vrts = None
 
     @property
     def spc_srf(self):
@@ -34,13 +34,18 @@ class Eq_space:
         """Get the name of the space"""
         return self._space_name
 
-   
+# -----------------------------
+# This is what's broken down the list into  the desired effect
     @property
     def spc_vrts(self):
         """Return the verts of the space"""
-        _spc_vrts = []
-        _spc_vrts.append(self._get_verts(self.spc_srf))
-        return _spc_vrts
+        #_spc_vrts = []
+        #_spc_vrts.append(self._get_verts(self.spc_srf))
+        x = self._get_verts(self.spc_srf)
+        #return _spc_vrts
+        return x
+        
+        
             
     
     @staticmethod
@@ -48,7 +53,9 @@ class Eq_space:
         pntstr = []
         points = rs.SurfacePoints(_srfc)
         for point in points:
-            pntstr.append((point.X, point.Y))
+            #pntstr.append((point.X, point.Y))
+            pt = (point.X, point.Y)
+            pntstr.append(pt)
         return pntstr
 
 
