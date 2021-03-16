@@ -5,7 +5,7 @@
 import rhinoscriptsyntax as rs
 
 class Eq_space:
-    """Space Properties for Eq_space.
+    """Space Properties for Eq_space. Inherited into the floor class to allow either-or assigment methodology
     
     Args:
         spc_srf: A srfc object hosting space properties.

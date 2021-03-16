@@ -8,6 +8,9 @@ import re
 import Grasshopper.Kernel as ghk
 import rhinoscriptsyntax as rs
 from timeit import default_timer
+"""Updated to function as intended
+   Helpers is a good junk drawer for random functions and methods
+"""
 
 @contextmanager
 def context_rh_doc(_ghdoc):
