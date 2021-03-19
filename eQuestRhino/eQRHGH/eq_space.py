@@ -5,7 +5,7 @@
 import rhinoscriptsyntax as rs
 
 class Eq_space:
-    """Space Properties for Eq_space. Inherited into the floor class to allow either-or assigment methodology
+    """Space Properties for Eq_space.
     
     Args:
         spc_srf: A srfc object hosting space properties.
@@ -13,11 +13,10 @@ class Eq_space:
         spc_vrts: vertices of the space
         
     Properties:
-        * spc_srf
-        * spc_name
-        * spc_vrts
+        *spc_srf 
+        *spc_name
+        *spc_vrts
     """
-    #__slots__ = ('_spc_srf', '_space_name', '_spc_vrts')
 
     def __init__(self, spc_srf, space_name):
         self._spc_srf = spc_srf
@@ -44,10 +43,8 @@ class Eq_space:
         x = self._get_verts(self.spc_srf)
         #return _spc_vrts
         return x
-        
-        
-            
-    
+               
+              
     @staticmethod
     def _get_verts(_srfc):
         pntstr = []
@@ -57,6 +54,15 @@ class Eq_space:
             pt = (point.X, point.Y)
             pntstr.append(pt)
         return pntstr
+
+
+
+
+
+
+
+
+
 
 
 

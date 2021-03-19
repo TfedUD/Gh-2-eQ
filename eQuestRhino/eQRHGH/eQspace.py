@@ -1,11 +1,5 @@
 """
-To be Archived:  was WIP space
-superseeded by eq_space and bldgflr(eqspace)
-
-
-
 HUGE thanks to Ed May!
-
 """
 
 

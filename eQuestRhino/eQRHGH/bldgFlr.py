@@ -7,13 +7,21 @@ import helpers
 
 
 class eQ_Floor(Eq_space):
-    """Class allowing for the creation of floors and childspaces in one shot.
+    """ Floor class with inheritance of Eq_space Class properties.
+
         Args:
-            spc_srf: The srfcs of the spaces hosting properties
-            space_name: The Name of the space (data flow a template for additional properties)
-            floorHeight: Height of the floor
-            floorName: Name of the floor
-            floorVerts: Vertices of the floor poly: currently extrernaly acquired: to be integrated natively
+            spc_srf: srfc object hosting the properties.
+            spc_name: Name of the space(s)
+            floorHeight: Floor height of the Floor
+            floorName: The name of the floor 
+            floorVerts: WIP currently: import joinbrep: surfacePoints modified list of verts.
+        
+        Properties:
+        *spc_srf
+        *spc_name
+        *floorHeight
+        *floorName
+        *floorVerts
     """
 
     def __init__(self, spc_srf, space_name, floorHeight, floorName, floorVerts):

@@ -7,9 +7,6 @@ import math
 import ghpythonlib.treehelpers as th
 from collections import namedtuple
 
-# This is the 'interface' that reads in the 'usertext' that we use as local file specific
-# File data, see for more information: https://developer.rhino3d.com/api/rhinoscript/user_data_methods/user_data_methods.htm
-
 class Temp_surface:
     """temp holder for srfc stuff"""
 

@@ -2,16 +2,17 @@ import rhinoscriptsyntax as rs
 import Eto
 import Rhino
 import re
-
+    
+  
 class Dialog_WindowProperties(Eto.Forms.Dialog):
-
+    """This is the one that works to assign names."""
     def getActivityType(self):
         return [
             'placeholder will make libs for typology'
         ]
     
     def __init__(self, _exgName):
-        self.Title = 'BR+A eQuest Room Properties'
+        self.Title = 'eQuest Room Properties'
         self.Resizeable = False
 
         self.roomNameLabel = Eto.Forms.Label(Text= 'Room Name')

@@ -1,7 +1,4 @@
-    """Superceeeded.
-    To be archived: To be archived: was a WIP space
 
-    """
 import System
 from System import Object
 
