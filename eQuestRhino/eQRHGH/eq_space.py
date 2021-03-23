@@ -58,16 +58,6 @@ class Eq_space:
 
 
 
-
-
-
-
-
-
-
-
-
-
     def to_dict(self, abridged=False):
         """ Return Space Properties as a dictionary.
         This is where to add additional properties to each space object!

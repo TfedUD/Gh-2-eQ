@@ -8,7 +8,9 @@ import re
 
 
 class Dialog_WindowExample(Eto.Forms.Dialog):
-    """Inhereting Eto.Forms.Dialog as above: really makes Eto write like PysimpleGui and tkinter and stuff I feel like."""
+    """Inhereting Eto.Forms.Dialog as above: really makes Eto write like PysimpleGui and tkinter and stuff I feel like.
+    Work in progress: does not run right   time != plentiful 
+    """
       
     def __init__(self, _exgUserText):
         self.Title = 'New toolbar WIP'
