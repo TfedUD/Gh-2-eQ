@@ -6,9 +6,6 @@ import Rhino
 import math
 import ghpythonlib.treehelpers as th
 from collections import namedtuple
-"""
-This is the code used after the 'pipeline' to retrieve attrs assigned to object GUIDs
-"""
 
 class Temp_surface:
     """temp holder for srfc stuff"""

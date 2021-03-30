@@ -1,8 +1,7 @@
-import System
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
-from eq_space import Eq_space
 import helpers
+from eq_space import Eq_space
 
 
 
@@ -30,21 +29,17 @@ class eQ_Floor(Eq_space):
         self._floorHeight = floorHeight
         self._floorName = floorName
         self._floorVerts = floorVerts
+        
 
     @property
     def floor_Name(self):
         return self._floorName
-
+        
     @property
     def floor_Verts(self):
-        flvrts = []
-        flvrts.append(self._floorVerts)
-        return flvrts
-
+        return self._floorVerts
+        
     @property
     def floor_Height(self):
         return self._floorHeight    
-
-
-
-
+     
