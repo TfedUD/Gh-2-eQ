@@ -23,13 +23,13 @@ class eQ_Floor(Eq_space):
         *floorVerts
     """
 
-    def __init__(self, spc_srf, space_name, floorHeight, floorName, floorVerts):
+    def __init__(self, spc_srf, space_name, floorHeight, floorName, floorVerts, floorZ):
         
         Eq_space.__init__(self, spc_srf, space_name)
         self._floorHeight = floorHeight
         self._floorName = floorName
         self._floorVerts = floorVerts
-        
+        self._floorZ = floorZ
 
     @property
     def floor_Name(self):
@@ -41,5 +41,9 @@ class eQ_Floor(Eq_space):
         
     @property
     def floor_Height(self):
-        return self._floorHeight    
+        return self._floorHeight   
+
+    @property
+    def floorZ(self):
+        return self._floorZ 
      

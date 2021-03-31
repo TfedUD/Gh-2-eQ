@@ -45,7 +45,9 @@ class PolyStrs:
     def _getVrts(objs):
         for obj in objs:
             x = obj.spc_vrts
-        return x
+            y = [t for t in (set(tuple(i) for i in x))]
+        
+        return q
     
     @property
     def floorName(self):
@@ -74,6 +76,14 @@ class PolyStrs:
         x = obj.floor_Height
         return x
 
+    @property
+    def flrZ(self):
+        return self._getZ(self.floorObjs)
+    
+    @staticmethod
+    def _getZ(obj):
+        x = obj.floorZ
+        return x
     
 
 # ------------------------------------------------------------
@@ -158,11 +168,11 @@ class PolyStrs:
 
     @property
     def flrFloor(self):
-        return self._flrflr(self.floorName, self.floorHeight)
+        return self._flrflr(self.floorName, self.floorHeight, self.flrZ)
 
     @staticmethod
-    def _flrflr(nm,h):
-        bdx = '"{}1" = FLOOR\n'.format(nm)+'   Z'+' '*16+'= 0\n'\
+    def _flrflr(nm,h,fz):
+        bdx = '"{}1" = FLOOR\n'.format(nm)+'   Z'+' '*16+'= {}\n'.format(fz)\
             +'   POLYGON'+' '*10+'= "{} Poly"\n   '.format(nm)+'SHAPE'+' '*12\
                 +'= POLYGON\n   '+'FLOOR-HEIGHT'+' '*5+'= {}'.format(h)+'\n   C-DIAGRAM-DATA   =*Level 1 UI DiagData*\n'\
                     +'   ..'
@@ -182,7 +192,8 @@ class PolyStrs:
 
 
 
-
+def cullDoop(lst):
+    return [t for t in (set(tuple(i) for i in lst))]
 
 
 
