@@ -45,9 +45,9 @@ class PolyStrs:
     def _getVrts(objs):
         for obj in objs:
             x = obj.spc_vrts
-            y = [t for t in (set(tuple(i) for i in x))]
+            #y = [t for t in (set(tuple(i) for i in x))]
         
-        return q
+        return x
     
     @property
     def floorName(self):
@@ -84,6 +84,14 @@ class PolyStrs:
     def _getZ(obj):
         x = obj.floorZ
         return x
+    
+    @property
+    def acdis(self):
+        return self._getAct(self.floorObjs)
+
+    @staticmethod
+    def _getAct(obj):
+        return obj.actD
     
 
 # ------------------------------------------------------------
@@ -156,11 +164,13 @@ class PolyStrs:
 
     @property
     def wrtstr(self):
-        return self._wrtstrfrmt(self.spcNm, self.writeStr)
+        return self._wrtstrfrmt(self.spcNm, self.floorName, self.writeStr)
 
     @staticmethod
-    def _wrtstrfrmt(nm, ob):
-        bdx = '"{} Plg" = POLYGON\n'.format(nm)
+    def _wrtstrfrmt(nm, lvl, ob):
+        nmFlt = filter(str.isdigit, lvl)
+        nmstr = "".join(nmFlt)
+        bdx = '"{}_L-{} Plg" = POLYGON\n'.format(nm, nmstr)
         strs = bdx+ob
         return strs
 
@@ -172,7 +182,7 @@ class PolyStrs:
 
     @staticmethod
     def _flrflr(nm,h,fz):
-        bdx = '"{}1" = FLOOR\n'.format(nm)+'   Z'+' '*16+'= {}\n'.format(fz)\
+        bdx = '"{}" = FLOOR\n'.format(nm)+'   Z'+' '*16+'= {}\n'.format(fz)\
             +'   POLYGON'+' '*10+'= "{} Poly"\n   '.format(nm)+'SHAPE'+' '*12\
                 +'= POLYGON\n   '+'FLOOR-HEIGHT'+' '*5+'= {}'.format(h)+'\n   C-DIAGRAM-DATA   =*Level 1 UI DiagData*\n'\
                     +'   ..'
@@ -180,12 +190,30 @@ class PolyStrs:
 
     @property
     def spcSpace(self):
-        return self._spcspc(self.spcNm)
+        return self._spcspc(self.spcNm, self.floorName, self.acdis)
     
     @staticmethod
-    def _spcspc(nm):
-        bdx = '"{}" = SPACE\n   SHAPE'.format(nm)+' '*11+'= POLYGON\n'+'   POLYGON'+' '*9+'= "{} Plg"\n'.format(nm)\
-            +'   C-ACTIVITY-DESC = *brkm*\n  ..'# Fillers to add in additional.formats
+    def _spcspc(nm, lvl, ad):
+        nmFlt = filter(str.isdigit, lvl)
+        nmstr ="".join(nmFlt)
+        bdx = '"{}_L-{}_SP" = SPACE\n   SHAPE'.format(nm,nmstr)+' '*11+'= POLYGON\n'+'   POLYGON'+' '*9+'= "{}_L-{} Plg"\n'.format(nm, nmstr)\
+            +'   C-ACTIVITY-DESC = *{}*\n  ..'.format(ad)# Fillers to add in additional.formats
+        return bdx
+
+
+    @property
+    def zoneStr(self):
+        return self._znStr(self.spcNm, self.floorName)
+    
+    @staticmethod
+    def _znStr(nm , lvl):
+        nmFlt = filter(str.isdigit, lvl)
+        nmstr = "".join(nmFlt)
+        nfl = filter(str.isdigit, lvl)
+        nms ="".join(nfl)
+        sp = '"{}_L-{}_SP"\n   '.format(nm,nms)
+        bdx = '"{}_L{}_ZN" = ZONE\n   '.format(nm, nmstr)+'TYPE'+' '*13+'= CONDITIONED\n   '+'SPACE'+' '*12\
+            +'= "{}"\n   ..'.format(sp)
         return bdx
 
 

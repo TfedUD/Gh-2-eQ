@@ -46,6 +46,11 @@ class eQ_surface:
     def name(self):
         ud_val = self.params.get('Object Name', 'No Name')
         return ud_val
+
+    @property
+    def act(self):
+        ud_val = self.params.get('Object Activ_Disc', None)
+        return ud_val
        
            
 
@@ -100,14 +105,7 @@ def get_rh_srfc_params(_input_geom, _ghenv, _ghdoc):
         surfaces.append(new_srfc_obj)
     
     return surfaces
-"""
-def get_srfc_verts(_input_geom):
-    srfc_verts = []
-    for item in _input_geom:
-        vrts = rs.SurfacePoints(item.guid)
-        srfc_verts.append(vrts)
-    return srfc_verts
-"""
+
 
 
 
