@@ -22,17 +22,8 @@ try:  # import the ladybug_rhino dependencies
     from ladybug_rhino.grasshopper import all_required_inputs, longest_list, wrap_output
 except ImportError as e:
     raise ImportError('\nFailed to import ladybug_rhino:\n\t{}'.format(e))
+from decimal import Decimal as dex
 
-try:  # import the core ladybug_rhino dependencies
-    from ladybug_rhino.config import tolerance
-    from ladybug_rhino.grasshopper import all_required_inputs
-except ImportError as e:
-    raise ImportError('\nFailed to import ladybug_rhino:\n\t{}'.format(e))
-
-#additions
-
-
-from helpers import contextmanager
 
 
 
@@ -45,7 +36,8 @@ class eQspace:
         self.rm = _rm
 
 
-#------------------------- To be used for filtering wall verts possibly
+#------------------------- To be used for filtering wall verts possibly?? 
+#------------------------ Tho it seems lb geom can do more better 
     @property
     def spc_vrts(self):
         return self._getVrts(self.rm)
@@ -155,32 +147,27 @@ class eQspace:
 
 #Need to get flr srfcs from _rms input to apply to the make face level
 
-"""
-# use this
-
-
-burt = []
-brp = []
-for flr in flrslst:
-    for f in flr:
-        burt.append(f.geometry)
+#THIS is how to pass in multiple objects into a single class instance
+class eQfloor(eQspace):
+    """ Get our rooms sorted out by story from the HB model as to write them out by:
+    Floor poly.append(spacePolys)
+    """
+    def __init__(self, rooms=[]):
         
-for b in burt:
-    brp.append(fg.from_face3d(b))
-    
-ttlFloor = ghc.BrepJoin(brp).breps
-balls = ttlFloor
+        self._rooms = []
+        for room in rooms:
+            self.add_room(room)
 
-def _get_verts(obj):
-        smoot = ghc.MergeFaces(obj).breps
-        brp_edges = ghc.BrepEdges(smoot).naked
-        brp_perim = ghc.JoinCurves(brp_edges, True)
-        brp_verts = ghc.ControlPoints(brp_perim).points
-        brpC =  ghc.CullDuplicates(brp_verts, 0.0).points
-        verts = [(point.X,point.Y) for point in brpC]
-        
-        return verts
-"""
+    @property
+    def rooms(self):
+        return(self._rooms)
+
+    def add_room(self, obj):
+        self._rooms.append(eQspace(obj))
+
+
+
+
 
 
 
