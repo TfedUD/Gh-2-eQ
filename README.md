@@ -4,19 +4,29 @@ The overall intent is to create interoperability and parallel workflow between L
 
 
 
-Currently: initialTBwip.py:   runpythonscript in Rhino: assigns names to spaces
-surfaces.py retrieves space data and passes to bldgFlr.py which instantiates all of tthe nessisary properties needed for named polys: floors and spaces for *.inp
+Dependencies:
+>     Ladybugtools 1.2
+>  https://github.com/ladybug-tools/lbt-grasshopper/wiki/1.4-Compatibility-Matrix
+<br>
+<br>
+<br>
+<br>
+in GH-2EQ:<br>
+copy eQbug into C:\Users\<%UserName%>\AppData\Roaming\McNeel\Rhinoceros\7.0\scripts
 
 
 
 
 
 
-Big shout to PF for enabling these shenanigans, and to EM as always; for continually sharing wisdom and knowledge.
 
-This project is heavily based on: and borrowed from the work of:
-https://www.ladybug.tools/
-http://passivehousetools.com/
+Big shout to PF for enabling these shenanigans, and to EM as always; for continually sharing wisdom and knowledge..
+
+This project is heavily based on: and borrowed from, and inspired by the work of:<br>
+https://www.ladybug.tools/<br>
+http://passivehousetools.com/<br>
+
+BUT IS NOT AS GOOD AS yet.
 
 Of which for some of us was why we wanted to learn how to code, and your work has been an ongoing reference and #goals.
 Thank you for open source and inspiring many.

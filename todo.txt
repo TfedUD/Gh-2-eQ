@@ -1,5 +1,0 @@
-Todo List:
-
-    [ ]   Complete *.inp writer to use floor and space objects to write into *.inp
-    [ ]   Complete dynamic interface to populate the space attrs toolbar with
-    
