@@ -95,6 +95,9 @@ class InpFile(eqf):
 
 
 
+
+
+
     def __init__(self, _ttB, floors=[]):#Floor Object in entierety
 
 
@@ -103,12 +106,42 @@ class InpFile(eqf):
         self._floors = []
         for floor in floors:
             self.add_flr(floor)
-    
+        
+        self._flr_polystr = []
+        for floor in floors:
+            self.add_flrPly(floor)
+#----------------------------------------------------------------   
+    def add_flrPly(self, obj):
+       self._flr_polystr.append(obj.floor_poly_strs)
 
+    @property
+    def floor_inp_poly(self):
+        return(self._inp_polyfill(self._flr_polystr, self.polygons))
+
+################################################################
+### Do for all _incoming floor properties
+    @staticmethod
+    def _inp_polyfill(obj,ply):
+        goods = [x for n in obj for x in n]
+        strang = ''.join(i for i in goods)
+        block = ply+strang
+        return  block
+################################################################
+#----------------------------------------------------------------
+# I think we can leave the next block out
     def add_flr(self, obj):
         self._floors.append(obj)
+    @property
+    def flors(self):
+        return(self._floors)
+# ----------------------------------------------------------------
 
+
+   
     # Do @property w/ static method for each set of inp_string:
     # Create additional @prop with staticmethod to be used as the .inpfileContents to write out 
 
+
+    # NO DO KWARGS! can we do kwargs with all those vars? prolly have to put em all in there
+    # somewhere
     
