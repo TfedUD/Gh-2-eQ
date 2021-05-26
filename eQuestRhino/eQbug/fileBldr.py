@@ -23,9 +23,9 @@ except ImportError as e:
     raise ImportError('\nFailed to import ladybug_rhino:\n\t{}'.format(e))
 from decimal import Decimal as dex
 
+from geomTools import EQverts as ev
 from ladybug_rhino import fromgeometry as fg
 import itertools
-
 
 #---------------Space Class---------------------------------
 
@@ -47,7 +47,23 @@ class eQspace:
         for f in floorFace:
             flrgeom.append(fg.from_face3d(f.geometry))
         return flrgeom
+#---------
+#---------adding RoofCeiling property to get the space height----------------
+    @property
+    def roofCeilingSrfc(self):
+        return self.getMyCeiling(self.rm)
+    
+    @staticmethod
+    def getMyCeiling(obj):
+        ceilingFaces = [srfc for srfc in obj.faces if str(srfc.type)=='RoofCeiling']
+        ceilinggeom = []
+        for f in ceilingFaces:
+            ceilinggeom.append(fg.from_face3d(f.geometry))
+        return ceilinggeom
 
+#---------
+#---------Additional props for the overall floor class
+#---------
     @property
     def room_story(self):
         return self._getStory(self.rm)
@@ -64,34 +80,6 @@ class eQspace:
     def _getHeight(obj):
         return obj.average_floor_height
 
-
-
-
-
-#------------------------- To be used for filtering wall verts possibly?? 
-#------------------------ Tho it seems lb geom can do more better
-#----------------This also is not being used from what I can tell lol..
-    @property
-    def spc_vrts(self):
-        return self._getVrts(self.rm)
-
-    @staticmethod
-    def _getVrts(obj):
-        try:
-            fcs= [face for face in obj.faces if str(face.type)=='Floor']
-            #flr = fcs[-2]
-            #p3 = flr.vertices
-            p3 = fcs.vertices
-            vrtlst=[]
-            for p in p3:
-                vrts = p.x, p.y
-                vrtlst.append(vrts)
-            return vrtlst
-        except  IndexError:
-            raise IndexError('No faces found on room:"{obj.name}"')
-#----------------------------------------------------------------------------
-#----------------
-#----------------
 
 
 
@@ -112,27 +100,30 @@ class eQspace:
     def _getlvl(obj):
         return obj.story
 
+    @property
+    def space_verts(self):
+        return(self._spaceVerts(self.floorSrfc))
+    
+    @staticmethod
+    def _spaceVerts(obj):
+        
+        te = obj
+        return _get_verts(te)
+
 #------------------------------------------------------------------------------
 
 #---------------- Space Polys -------------------------------------------------
 
     @property
     def spcPlystr(self):
-        return self._spvst(self.rm, self.spc_nm, self.lvl)
+        return self._spvst(self.space_verts, self.spc_nm, self.lvl)
 
     @staticmethod
-    def _spvst(obj, nm, lv):
+    def _spvst(vrts, nm, lv):
         try:
-            fcs= [face for face in obj.faces]
-            flr = fcs[-2]
-            p3 = flr.vertices
-
-            vrtlst=[]
-            for p in p3:
-                vrts = p.x, p.y
-                vrtlst.append(vrts)
             st = []
-            for i, ind in enumerate(vrtlst):
+            x = vrts
+            for i, ind in enumerate(x):
                 indx = i+1
                 strv = '   V{}'.format(indx)+' '*14+'=  '
                 st.append(prepend(ind,strv))
@@ -211,9 +202,9 @@ class eQfloor(eQspace):
         for room in self.rooms:
             self.add_storyInd(room)
 
-        self._room_heights = []
+        self._room_roof_ceiling = []
         for room in self.rooms:
-            self.add_height(room)
+            self.add_roofceiling(room)
 
         self._room_poly_strings = []
         for room in self.rooms:
@@ -264,16 +255,21 @@ class eQfloor(eQspace):
 #---------
 
 #---------
-    def add_height(self, obj):
-        self._room_heights.append(obj.room_height)
+    def add_roofceiling(self, obj):
+        self._room_roof_ceiling.append(obj.roofCeilingSrfc)
     
     @property
     def floor_Height(self):
-        return self._getheight(self._room_heights)
+        return self._getheight(self._room_roof_ceiling)
     
     @staticmethod
     def _getheight(obj):
-        return obj[0]
+        geomlist = [x for n in obj for x in n]
+        te = ghc.BrepJoin(geomlist).breps
+        sm = ghc.MergeFaces(te).breps
+        pt = ghc.Area(sm).centroid
+        
+        return pt.Z
 #---------
 
 #---------
@@ -303,7 +299,8 @@ class eQfloor(eQspace):
     def _floorVerts(obj):
         geomslst = [ x for n in obj for x in n]
         te = ghc.BrepJoin(geomslst).breps
-        return _get_verts(te)
+        sm = ghc.MergeFaces(te).breps
+        return _get_verts(sm)
 #---------
 
 #---------
@@ -327,7 +324,7 @@ class eQfloor(eQspace):
 
     @staticmethod
     def _levelGet(obj):
-        return obj[0]
+        return obj[1]
 #---------
 
 
@@ -415,13 +412,24 @@ def prepend(list, str):
     return(list)
 
 def _get_verts(obj):
-        brp_edges = ghc.DeconstructBrep(obj).edges
-        brp_perim = ghc.JoinCurves(brp_edges, True)
-        brp_verts = ghc.ControlPoints(brp_perim).points
-        brpC =  ghc.CullDuplicates(brp_verts, 0.0).points
-        verts = [(point.X,point.Y) for point in brpC]
+        #brp_edges = ghc.DeconstructBrep(obj).edges
+        #brp_perim = ghc.JoinCurves(brp_edges, True)
+        #brp_verts = ghc.ControlPoints(brp_perim).points
+        #brpC =  ghc.CullDuplicates(brp_verts, 0.0).points
+        brp = ghc.DeconstructBrep(obj).vertices
+        brpC = ghc.ReverseList(brp)
+        verts = [ev.from_Rh_points(point) for point in brpC]
         
         return verts
         
-
+def _get_vertsFloor(obj):
+        #brp_edges = ghc.DeconstructBrep(obj).edges
+        #brp_perim = ghc.JoinCurves(brp_edges, True)
+        #brp_verts = ghc.ControlPoints(brp_perim).points
+        #brpC =  ghc.CullDuplicates(brp_verts, 0.0).points
+        brp = ghc.DeconstructBrep(obj).vertices
+        #brpC = ghc.ReverseList(brp)
+        verts = [ev.from_Rh_points(point) for point in brp]
+        
+        return verts
 
