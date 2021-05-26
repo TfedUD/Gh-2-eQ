@@ -25,6 +25,7 @@ from decimal import Decimal as dex
 
 from geomTools import EQverts as ev
 from ladybug_rhino import fromgeometry as fg
+from ladybug_rhino import togeometry as tg
 import itertools
 
 #---------------Space Class---------------------------------
