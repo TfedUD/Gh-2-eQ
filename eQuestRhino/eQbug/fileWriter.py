@@ -1,15 +1,16 @@
 from fileBldr import eQfloor as eqf
 import os
+import itertools
 
 
 
 
 class InpFile(eqf):
     topLevel = 'INPUT ..\n\n\n\n'
-    dby = '$ ---------------------------------------------------------\n'
-    abortDiag = dby+'$              Abort, Diagnostics\n'+dby
     spacer = '\n\n'
-    globalParam = dby+'$              Global Parameters\n'+dby
+    dby = '$ ---------------------------------------------------------\n'
+    abortDiag = dby+'$              Abort, Diagnostics\n'+dby+spacer
+    globalParam = dby+'$              Global Parameters\n'+dby+spacer
     comply = dby+'$              Compliance Data\n'+dby+spacer
     siteBldg = dby+'$              Site and Building Data\n'+dby+spacer
     matslayers = dby+'$              Materials / Layers / Constructions\n'+dby+spacer
@@ -91,17 +92,17 @@ class InpFile(eqf):
 
 
 
-
-
-
-
-
-
-
-    def __init__(self, _ttB, floors=[]):#Floor Object in entierety
+    def __init__(self, _ttB, floors=[], **kwargs):#Floor Object in entierety
 
 
         self.ttb = _ttB
+
+        self._floors = []
+        for floor in floors:
+            self.add_flr(floor)
+
+        for k, v in kwargs.items():
+            setattr(self,k,v)
 
         self._floors = []
         for floor in floors:
@@ -119,6 +120,8 @@ class InpFile(eqf):
         for floor in floors:
             self.add_zone(floor)
 
+        
+
 # --------------------------------------------------------------
     def add_zone(self, obj):
         self._flr_zone.append(obj.floor_zone_strs)
@@ -130,6 +133,15 @@ class InpFile(eqf):
 #----------------------------------------------------------------
     def add_flrSpace(self, obj):
         self._flr_space.append(obj.floor_space_strs)
+
+#----------------------------------------------------------------
+# I think we can leave the next block out
+    def add_flr(self, obj):
+        self._floors.append(obj)
+    @property
+    def flors(self):
+        return(self._floors)
+# ----------------------------------------------------------------
 
 ################################################################
 ### Do for all _incoming floor properties to write to inp
@@ -175,6 +187,25 @@ class InpFile(eqf):
         return block
 ################################# The INP file  kinda chaos but it'l work for now ##########################
 
+    def __str__(self):
+        allTheThings =[self.topLevel, self.abortDiag, self.globalParam, self.comply,
+                        self.siteBldg, self.matslayers, self.glzCode, self.glzTyp,
+                        self.WindowLayers, self.iLikeLamp, self.daySch, self.weekSch,
+                        self.annualSch, self.floor_inp_poly, self.wallParams, self.fixBldgShade,
+                        self.miscCost, self.perfCurve, self.floor_inp_space, self.elecFuelMeter,
+                        self.elecMeter, self.fuelMeter, self.masterMeter, self.hvacCircLoop, 
+                        self.pumps, self.heatExch, self.circLoop, self.chillyboi, self.boilyboi,
+                        self.dwh, self.heatReject, self.towerFree, self.pvmod, self.elecgen,
+                        self.thermalStore, self.groundLoopHx, self.compDhwRes, self.steamAndcldMtr,
+                        self.steamMtr, self.chillMeter, self.floor_inp_zone, self.miscNmeterHvac,
+                        self.equipControls, self.loadManage, self.UtilRate, self.ratchets, 
+                        self.blockCharge, self.utilRate, self.outputReporting, self.loadsNonHr,
+                        self.sysNonHr, self.plntNonHr, self.econNonHr, self.hourlyRep,
+                        self.theEnd
+                        ]
+        runningLowOnVarNames = ''.join(i for i in allTheThings)
+
+        return(runningLowOnVarNames)
 
 
 
@@ -183,14 +214,7 @@ class InpFile(eqf):
 
     
 ################################################################
-#----------------------------------------------------------------
-# I think we can leave the next block out
-    def add_flr(self, obj):
-        self._floors.append(obj)
-    @property
-    def flors(self):
-        return(self._floors)
-# ----------------------------------------------------------------
+
 
 
    
