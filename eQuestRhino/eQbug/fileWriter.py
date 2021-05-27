@@ -110,22 +110,78 @@ class InpFile(eqf):
         self._flr_polystr = []
         for floor in floors:
             self.add_flrPly(floor)
+        
+        self._flr_space = []
+        for floor in floors:
+            self.add_flrSpace(floor)
+
+        self._flr_zone = []
+        for floor in floors:
+            self.add_zone(floor)
+
+# --------------------------------------------------------------
+    def add_zone(self, obj):
+        self._flr_zone.append(obj.floor_zone_strs)
 #----------------------------------------------------------------   
     def add_flrPly(self, obj):
        self._flr_polystr.append(obj.floor_poly_strs)
 
-    @property
-    def floor_inp_poly(self):
-        return(self._inp_polyfill(self._flr_polystr, self.polygons))
+
+#----------------------------------------------------------------
+    def add_flrSpace(self, obj):
+        self._flr_space.append(obj.floor_space_strs)
 
 ################################################################
-### Do for all _incoming floor properties
+### Do for all _incoming floor properties to write to inp
+############## EACH PROPERTY RETURNS THE HEADER AND COMBINED INP OBJECTS
+############## BY FLOOR IN ORDER.... MAY NEED TO ADD STUFF TO MAKE SURE ITS IN ORDER
+############## TO BE CONTINUED
+
+    @property
+    def floor_inp_poly(self):
+        """ Returns the *.inp formatted polygon block from all floor objects """
+        return(self._inp_polyfill(self._flr_polystr, self.polygons))
+
     @staticmethod
     def _inp_polyfill(obj,ply):
+        """Combines the floor{spaces} inp objects and stacks them toogether"""
         goods = [x for n in obj for x in n]
         strang = ''.join(i for i in goods)
         block = ply+strang
         return  block
+
+    @property
+    def floor_inp_space(self):
+        """ Returns the *.inp formatted spaces block from all floor objects """
+        return(self._inp_spacefill(self._flr_space, self.floorNspace))
+    
+    @staticmethod
+    def _inp_spacefill(obj,spc):
+        """Combines the floor{spaces} inp objects and stacks them toogether"""
+        goods = [x for n in obj for x in n]
+        strang = ''.join(i for i in goods)
+        block = spc+strang
+        return block
+
+    @property
+    def floor_inp_zone(self):
+        return(self._inp_zonefill(self._flr_zone, self.hvacSysNzone))
+
+    @staticmethod
+    def _inp_zonefill(obj,zn):
+        goods = [x for n in obj for x in n]
+        strang = ''.join(i for i in goods)
+        block = zn+strang
+        return block
+################################# The INP file  kinda chaos but it'l work for now ##########################
+
+
+
+
+
+
+
+    
 ################################################################
 #----------------------------------------------------------------
 # I think we can leave the next block out
