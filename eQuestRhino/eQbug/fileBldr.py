@@ -152,7 +152,7 @@ class eQspace:
     def _makeSpace(obj):
         filtDesc = filter(str.isalpha, obj.display_name)
         bdx = '"{}_L-{}_SP" = SPACE\n   SHAPE'.format(obj.display_name, obj.story)+' '*11+'= POLYGON\n'+'   POLYGON'\
-            +' '*9+'= "{}_L-{} plg"\n'.format(obj.display_name, obj.story)+'   C-ACTIVITY-DESC = *{}*\n   ..'.format(filtDesc)
+            +' '*9+'= "{}_L-{} Plg"\n'.format(obj.display_name, obj.story)+'   C-ACTIVITY-DESC = *{}*\n   ..\n'.format(filtDesc)
         return bdx
 
 #---------------------------------------------------------------------
@@ -167,7 +167,7 @@ class eQspace:
     def _makezone(obj):
         sp = '"{}_L-{}_SP"\n   '.format(obj.display_name, obj.story)
         bdx = '"{}_L{}_ZN" = ZONE\n   '.format(obj.display_name, obj.story)+'TYPE'+' '*13+'= CONDITIONED\n   '\
-            +'SPACE'+' '*12+'= {}\n   ..'.format(sp)
+            +'SPACE'+' '*12+'= {}\n   ..\n'.format(sp)
         return bdx
 
 

@@ -40,7 +40,7 @@ class InpFile(eqf):
     fuelMeter = dby+'$              Fuel Meters\n'+dby+spacer
     masterMeter = dby+'$              Master Meters\n'+dby+spacer
 
-    hvacCircLoop = starmoney+starBlnk+' **      HVAC Circulation Loops / Plant Equipment       **\n'\
+    hvacCircLoop = starmoney+starBlnk+'$ **      HVAC Circulation Loops / Plant Equipment       **\n'\
         +starBlnk+starmoney+spacer
     
     pumps = dby+'$              Pumps\n'+dby+spacer
@@ -188,7 +188,7 @@ class InpFile(eqf):
 ################################# The INP file  kinda chaos but it'l work for now ##########################
 
     def __str__(self):
-        allTheThings =[self.topLevel, self.abortDiag, self.globalParam, self.comply,
+        allTheThings =[self.topLevel, self.abortDiag, self.globalParam,self.ttb, self.comply,
                         self.siteBldg, self.matslayers, self.glzCode, self.glzTyp,
                         self.WindowLayers, self.iLikeLamp, self.daySch, self.weekSch,
                         self.annualSch, self.floor_inp_poly, self.wallParams, self.fixBldgShade,
@@ -203,7 +203,7 @@ class InpFile(eqf):
                         self.sysNonHr, self.plntNonHr, self.econNonHr, self.hourlyRep,
                         self.theEnd
                         ]
-        runningLowOnVarNames = ''.join(i for i in allTheThings)
+        runningLowOnVarNames = '\n'.join(i for i in allTheThings)  #will this fix it
 
         return(runningLowOnVarNames)
 
