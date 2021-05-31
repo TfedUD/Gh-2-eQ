@@ -204,7 +204,6 @@ class InpFile(eqf):
                         self.theEnd
                         ]
         runningLowOnVarNames = '\n'.join(i for i in allTheThings)  #will this fix it
-
         return(runningLowOnVarNames)
 
 

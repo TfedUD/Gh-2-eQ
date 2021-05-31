@@ -17,5 +17,3 @@ class EQverts(object):
 
     def __repr__(self):
         return '({},{})'.format(self.x, self.y)
-
-

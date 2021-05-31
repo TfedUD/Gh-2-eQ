@@ -63,6 +63,24 @@ class eQspace:
         return ceilinggeom
 
 #---------
+#---------adding walls in to index for wall inputs (cred: Abbot Price)
+    @property
+    def room_wall_V(self):
+        return self._getAllWalls(self.rm)
+    
+    @staticmethod
+    def _getAllWalls(obj):
+        wallIndx = []
+        wallybois = [srfc for srfc in obj.faces if str(srfc.type)=='Wall']
+        for face in wallybois:
+            if str(face.boundary_condition)=='Outdoors':
+                indx = wallybois.index(face)+1
+                wallIndx.append(str(indx))
+        return wallIndx
+    
+
+
+#---------
 #---------Additional props for the overall floor class
 #---------
     @property
@@ -146,14 +164,22 @@ class eQspace:
 #---------------------- spaces--------------------------------------
     @property
     def spcSpace(self):
-        return self._makeSpace(self.rm)
+        return self._makeSpace(self.rm, self.room_wall_V)
 
     @staticmethod
-    def _makeSpace(obj):
+    def _makeSpace(obj, rmwv):
         filtDesc = filter(str.isalpha, obj.display_name)
         bdx = '"{}_L-{}_SP" = SPACE\n   SHAPE'.format(obj.display_name, obj.story)+' '*11+'= POLYGON\n'+'   POLYGON'\
-            +' '*9+'= "{}_L-{} Plg"\n'.format(obj.display_name, obj.story)+'   C-ACTIVITY-DESC = *{}*\n   ..\n'.format(filtDesc)
-        return bdx
+            +' '*9+'= "{}_L-{} Plg"\n'.format(obj.display_name, obj.story)+'   C-ACTIVITY-DESC = *{}*\n  ..\n'.format(filtDesc)
+        wallstings = []
+        for i, wv in enumerate(rmwv):
+            idx = i+1
+            wvst = '"{}_L-{}_SP Wall_{}" = EXTERIOR-WALL\n  LOCATION        = SPACE-V{}\n  ..\n'.format(obj.display_name, obj.story,idx,wv)
+            wallstings.append(wvst)
+        wvl = '\n'.join([i for i in wallstings[0:]])
+        return str(bdx)+'\n'+wvl
+
+
 
 #---------------------------------------------------------------------
 
@@ -189,7 +215,6 @@ class eQfloor(eQspace):
             floor space/poly/area whatever:   create for floor: append room strs
     """
     def __init__(self, rooms=[]):
-
         
         self._rooms = []
         for room in rooms:
